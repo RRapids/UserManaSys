@@ -9,14 +9,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@WebServlet(name = "LoginClServlet", urlPatterns = "/LoginClServlet")
+@WebServlet(name = "LoginClServlet", urlPatterns = {"/LoginClServlet"})
 public class LoginClServlet extends HttpServlet {
+//    private static final long seriaLVersionUIN=1L;
+    public void init(){
+        try {
+            //创建一个FileReader
+            FileReader fr = null;
+            fr = new FileReader("d:\\myCounter.txt");
+            BufferedReader br = new BufferedReader(fr);
+            //读出一行数据
+            String numVal = br.readLine();
+            br.close();
+            this.getServletContext().setAttribute("visitTimes",numVal);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
@@ -33,15 +48,29 @@ public class LoginClServlet extends HttpServlet {
         List<HashMap> lists = new ArrayList<>();
         if (userdao.findUser(user)) {
             lists = userdao.search(0, 3);
+            System.out.println(lists);
             int pageCount = userdao.searchCount();
             //要把lists中数据带入Welcome页面中
-            request.setAttribute("查询结果",lists);
-            request.setAttribute("pageCount",pageCount);
-            request.setAttribute("pageNow","1");
+            request.setAttribute("result", lists);
+            request.setAttribute("pageCount", pageCount + "");
+            request.setAttribute("pageNow", "1");
             System.out.println(username + password);
             hs.setAttribute("username", username);
-//              response.sendRedirect("Welcome?username="+username+"&password="+password);
-            request.getRequestDispatcher("Welcome.jsp").forward(request, response);
+//            //创建一个FileReader
+//            FileReader fr = new FileReader("d:\\myCounter.txt");
+//            BufferedReader br = new BufferedReader(fr);
+//            //读出一行数据
+//            String numVal = br.readLine();
+//            br.close();
+//            int times = Integer.parseInt(numVal);
+//            //增加一次
+//            times++;
+//            //写入
+//            FileWriter fileWriter = new FileWriter("D:\\myCounter.txt");
+//            BufferedWriter bw = new BufferedWriter(fileWriter);
+//            bw.write(times+"");
+//            bw.close();
+            request.getRequestDispatcher("main.jsp").forward(request, response);
 
         } else {
             response.sendRedirect("login.jsp");
@@ -49,6 +78,20 @@ public class LoginClServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String times = this.getServletContext().getAttribute("visitTimes").toString();
+        this.getServletContext().setAttribute("visitTimes",(Integer.parseInt(times)+1)+"");
         doPost(request, response);
+    }
+
+    public void destory(){
+        try {
+            FileWriter fileWriter = null;
+            fileWriter = new FileWriter("D:\\myCounter.txt");
+            BufferedWriter bw = new BufferedWriter(fileWriter);
+            bw.write(this.getServletContext().getAttribute("visitTimes").toString());
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

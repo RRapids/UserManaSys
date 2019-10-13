@@ -10,12 +10,12 @@
 <head>
     <title>登录页面</title>
 </head>
-<body>
+<body bgcolor="#00ffff">
 
-<form action="LoginClServlet" method="get">
-
-    用户名：<input type="text" name="username"><br>
-    密  码：<input type="text" name="password"><br>
+<form action="LoginClServlet" method="get" align="center">
+    <h3>用户登录</h3><br>
+    用户名：<input type="text" name="username"><br><br>
+    密  码：<input type="text" name="password"><br><br>
     <input type="submit" value="提交"><br>
 
 </form>

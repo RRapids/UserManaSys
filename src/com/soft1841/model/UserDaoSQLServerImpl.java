@@ -9,11 +9,11 @@ public class UserDaoSQLServerImpl extends JDBCUtil implements userDao {
     public boolean findUser(User user) {
         Boolean flag = false;
         String sql = "select * from users where username=? and password=?";
-        Object[] params ={user.getUsername(),user.getPassword()};
-        this.executeQuery(sql,params);
+        Object[] params = {user.getUsername(), user.getPassword()};
+        this.executeQuery(sql, params);
         List<HashMap> listUser = new ArrayList<>();
-        listUser = this.executeQuery(sql,params);
-        if (listUser.size()>0){
+        listUser = this.executeQuery(sql, params);
+        if (listUser.size() > 0) {
             flag = true;
         }
         return flag;
@@ -22,24 +22,16 @@ public class UserDaoSQLServerImpl extends JDBCUtil implements userDao {
 
     @Override
     public int insert(User user) {
-        String sql = "INSERT INTO USER(username,password,email,grade) VALUES(?,?,?,?)";
-        Object[] params={user.getUsername(),user.getPassword(),user.getEmail(),user.getGrade()};
-        User user1 = new User();
-        user1.setUsername(user.getUsername());
-        user1.setPassword(user.getPassword());
-        UserDaoSQLServerImpl userdao = new UserDaoSQLServerImpl();
-        int n = this.executeUpdate(sql,params);
-        if (userdao.findUser(user1)){
-            return 0;
-        }
-        return n;
+        String sql = "insert into users(username,password,email,grade) VALUES(?,?,?,?)";
+        Object[] params = {user.getUsername(), user.getPassword(), user.getEmail(), user.getGrade()};
+        return this.executeUpdate(sql, params);
     }
 
     @Override
     public int delete(int id) {
-        String sql="DELETE  FROM USER WHERE userID=?";
-        Object[] params ={id};
-        int n =this.executeUpdate(sql,params);
+        String sql = "delete from users where userId=?";
+        Object[] params = {id};
+        int n = this.executeUpdate(sql, params);
         return n;
     }
 
@@ -50,12 +42,12 @@ public class UserDaoSQLServerImpl extends JDBCUtil implements userDao {
         int pageCount;
         List<HashMap> list = new ArrayList<>();
         String sql = "select * from users";
-        list = this.executeQuery(sql,null);
+        list = this.executeQuery(sql, null);
         rowCount = list.size();
-        if (rowCount%pageSize==0){
-            pageCount=rowCount/pageSize;
-        }else{
-            pageCount=rowCount/pageSize+1;
+        if (rowCount % pageSize == 0) {
+            pageCount = rowCount / pageSize;
+        } else {
+            pageCount = rowCount / pageSize + 1;
         }
         return pageCount;
     }
@@ -63,9 +55,16 @@ public class UserDaoSQLServerImpl extends JDBCUtil implements userDao {
     @Override
     public List<HashMap> search(int pageSize, int epageSize) {
         List<HashMap> lists = new ArrayList<>();
-        String sql = "select * from users limit ?,?" ;
-        Object[] params ={pageSize,epageSize};
-        this.executeQuery(sql,params);
+        String sql = "select * from users limit ?,?";
+        Object[] params = {pageSize, epageSize};
+        lists = this.executeQuery(sql, params);
         return lists;
+    }
+
+    @Override
+    public int update(User user) {
+        String sql = "update users set username=?,password=?,email=?,grade=?";
+        Object[] params = {user.getUsername(), user.getPassword(), user.getEmail(), user.getGrade()};
+        return this.executeUpdate(sql, params);
     }
 }

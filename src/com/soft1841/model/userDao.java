@@ -9,4 +9,6 @@ public interface userDao {
     public int delete(int id);
     public int searchCount();//计算一共有多少页
     public List<HashMap> search(int pageSize,int epageSize);
+    public int update(User user);
+
 }

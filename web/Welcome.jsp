@@ -71,7 +71,9 @@
             <td>用户等级</td>
             <td>修改用户</td>
             <td>删除用户</td>
+
         </tr>
+
         <%for (int i = 0; i < lists.size(); i++) {%>
         <%
             int index = (int) lists.get(i).get("userId");
@@ -90,9 +92,15 @@
             &grade=<%=lists.get(i).get("grade")%>&userId=<%=lists.get(i).get("userId")%>&email=<%=lists.get(i).get("email")%>">修改用户</a>
             </td>
             <td><a href="UserClServlet?flag=delUser&userId=<%=index%>" onclick="return check();">删除用户</a></td>
+
         </tr>
         <%}%>
     </table>
+    //输入去那一页
+    <form action="UserClServlet?flag=fenye" method="post">
+        <input type="text" name="pageNow">
+        <input type="submit" value="go">
+    </form>
     <br>
     <%
         //接受用户希望显示的页面，显示第几页
@@ -117,6 +125,9 @@
 </center>
 <%
     out.print("该网页被访问了："+this.getServletConfig().getServletContext().getAttribute("visitTimes")+"次。");
+    out.print("你的IP地址为："+request.getRemoteAddr()+"<br>");
+    out.print("你的机器名称是"+request.getRemoteHost()+"<br>");
 %>
+
 </body>
 </html>

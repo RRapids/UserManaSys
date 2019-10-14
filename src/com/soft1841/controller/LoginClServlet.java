@@ -30,7 +30,6 @@ public class LoginClServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -56,20 +55,6 @@ public class LoginClServlet extends HttpServlet {
             request.setAttribute("pageNow", "1");
             System.out.println(username + password);
             hs.setAttribute("username", username);
-//            //创建一个FileReader
-//            FileReader fr = new FileReader("d:\\myCounter.txt");
-//            BufferedReader br = new BufferedReader(fr);
-//            //读出一行数据
-//            String numVal = br.readLine();
-//            br.close();
-//            int times = Integer.parseInt(numVal);
-//            //增加一次
-//            times++;
-//            //写入
-//            FileWriter fileWriter = new FileWriter("D:\\myCounter.txt");
-//            BufferedWriter bw = new BufferedWriter(fileWriter);
-//            bw.write(times+"");
-//            bw.close();
             request.getRequestDispatcher("main.jsp").forward(request, response);
 
         } else {
